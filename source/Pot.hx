@@ -13,6 +13,7 @@ class Pot extends FlxSprite
 	public var pickedUp(get, set):Bool;
 	var _pickedUp:Bool;
 	var growTicks:Int;
+	public var isGrown(get, null):Bool;
 
 	function get_pickedUp() { return _pickedUp; }
 	function set_pickedUp(val:Bool)
@@ -28,6 +29,7 @@ class Pot extends FlxSprite
 		}
 		return val;
 	}
+	function get_isGrown() { return growTicks >= FULL_GROW_TIME; }
 
 	public function new()
 	{

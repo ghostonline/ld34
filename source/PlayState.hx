@@ -13,6 +13,8 @@ class PlayState extends FlxState
 	var player:Player;
 	var pot:Pot;
 	var light:Light;
+	var levelCompleteText:FlxText;
+	var nextLevelButton:FlxButton;
 
 	override public function create():Void
 	{
@@ -29,11 +31,20 @@ class PlayState extends FlxState
 		player = new Player();
 		level.placeAt(level.start, player);
 
+		levelCompleteText = new FlxText(0, 0, FlxG.width, "Level complete!", 24);
+		levelCompleteText.alignment = "center";
+		levelCompleteText.visible = false;
+
+		nextLevelButton = new FlxButton(FlxG.width - 100, levelCompleteText.height + 10, "Next", nextLevel);
+		nextLevelButton.visible = false;
+
 		add(light);
 		add(pot);
-		add(pot.plant);
 		add(player);
+		add(pot.plant);
 		add(level);
+		add(levelCompleteText);
+		add(nextLevelButton);
 	}
 
 	override public function destroy():Void
@@ -63,5 +74,17 @@ class PlayState extends FlxState
 		pot.playerCollide(player);
 		pot.levelCollide(level);
 		FlxG.collide(player, level);
+
+		if (pot.isGrown)
+		{
+			levelCompleteText.visible = true;
+			FlxG.mouse.visible = true;
+			nextLevelButton.visible = true;
+		}
+	}
+
+	function nextLevel()
+	{
+		trace("BANG!");
 	}
 }
