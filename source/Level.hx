@@ -17,6 +17,7 @@ class Level extends FlxTypedGroup<FlxObject>
 	var tileWidth:Int;
 	var tileHeight:Int;
 
+	public var start(default, null):FlxPoint;
 	var pots:FlxTypedGroup<Pot>;
 	var lights:Array<Light>;
 
@@ -28,6 +29,7 @@ class Level extends FlxTypedGroup<FlxObject>
 		tileWidth = data.tileWidth;
 		tileHeight = data.tileHeight;
 
+		start = new FlxPoint();
 		pots = new FlxTypedGroup<Pot>();
 		lights = new Array<Light>();
 
@@ -42,6 +44,8 @@ class Level extends FlxTypedGroup<FlxObject>
 				switch(tileId)
 				{
 					case ID_PLAYER:
+						start.x = col * tileWidth;
+						start.y = row * tileHeight;
 					case ID_POT:
 						createPot(col, row);
 					case ID_SUN:
