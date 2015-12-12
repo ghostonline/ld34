@@ -15,11 +15,11 @@ class PlayState extends FlxState
 	var light:Light;
 	var levelCompleteText:FlxText;
 	var nextLevelButton:FlxButton;
+	var resetButton:FlxButton;
 
 	override public function create():Void
 	{
 		super.create();
-		FlxG.mouse.visible = false;
 		level = new Level("test");
 
 		pot = new Pot();
@@ -38,6 +38,10 @@ class PlayState extends FlxState
 		nextLevelButton = new FlxButton(FlxG.width - 100, levelCompleteText.height + 10, "Next", nextLevel);
 		nextLevelButton.visible = false;
 
+		resetButton = new FlxButton(0, 0, "Reset", resetLevel);
+		resetButton.x = FlxG.width - resetButton.width - 5;
+		resetButton.y = FlxG.height - resetButton.height - 5;
+
 		add(light);
 		add(pot);
 		add(player);
@@ -45,6 +49,7 @@ class PlayState extends FlxState
 		add(level);
 		add(levelCompleteText);
 		add(nextLevelButton);
+		add(resetButton);
 	}
 
 	override public function destroy():Void
@@ -52,7 +57,6 @@ class PlayState extends FlxState
 		super.destroy();
 		level = null;
 		player = null;
-		FlxG.mouse.visible = true;
 	}
 
 	override public function update():Void
@@ -78,7 +82,6 @@ class PlayState extends FlxState
 		if (pot.isGrown)
 		{
 			levelCompleteText.visible = true;
-			FlxG.mouse.visible = true;
 			nextLevelButton.visible = true;
 		}
 	}
@@ -86,5 +89,10 @@ class PlayState extends FlxState
 	function nextLevel()
 	{
 		trace("BANG!");
+	}
+
+	function resetLevel()
+	{
+		FlxG.switchState(new PlayState());
 	}
 }
