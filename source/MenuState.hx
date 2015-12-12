@@ -7,33 +7,35 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 
-/**
- * A FlxState which can be used for the game's menu.
- */
 class MenuState extends FlxState
 {
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
+	var title:FlxText;
+	var start:FlxButton;
+
 	override public function create():Void
 	{
 		super.create();
+		start = new FlxButton();
+		start.onUp.callback = startGame;
+		start.text = "Start";
+		start.x = (FlxG.width - start.width) / 2;
+		start.y = FlxG.height - 20 - start.height;
+		add(start);
+
+		title = new FlxText(0, 20, FlxG.width, "Pot Lug", 32);
+		title.alignment = "center";
+		add(title);
 	}
-	
-	/**
-	 * Function that is called when this state is destroyed - you might want to 
-	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
+
+	function startGame()
+	{
+		FlxG.switchState(new PlayState());
+	}
+
 	override public function destroy():Void
 	{
 		super.destroy();
+		start = null;
+		title = null;
 	}
-
-	/**
-	 * Function that is called once every frame.
-	 */
-	override public function update():Void
-	{
-		super.update();
-	}	
 }
