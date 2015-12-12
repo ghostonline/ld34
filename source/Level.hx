@@ -4,6 +4,7 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.group.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
+import flixel.util.FlxPoint;
 
 class Level extends FlxTypedGroup<FlxObject>
 {
@@ -12,12 +13,22 @@ class Level extends FlxTypedGroup<FlxObject>
 	static inline var ID_SUN = 4;
 
 	var tiles:FlxTilemap;
+	var tileWidth:Int;
+	var tileHeight:Int;
+
+	var pots:Array<Pot>;
+	var lights:Array<Light>;
 
 	public function new(name:String)
 	{
 		super();
 
 		var data = new TiledMap('assets/data/$name.tmx');
+		tileWidth = data.tileWidth;
+		tileHeight = data.tileHeight;
+
+		pots = new Array<Pot>();
+		lights = new Array<Light>();
 
 		var tileData = data.layers[0].tileArray.copy();
 		var idx = 0;
@@ -31,8 +42,9 @@ class Level extends FlxTypedGroup<FlxObject>
 				{
 					case ID_PLAYER:
 					case ID_POT:
+						createPot(col, row);
 					case ID_SUN:
-						// Blaat
+						createLight(col, row);
 					default:
 						replaced = tileId;
 				}
@@ -44,8 +56,26 @@ class Level extends FlxTypedGroup<FlxObject>
 		tiles = new FlxTilemap();
 		tiles.widthInTiles = data.width;
 		tiles.heightInTiles = data.height;
-		tiles.loadMap(tileData, "assets/images/tiles.png", data.tileWidth, data.tileHeight, FlxTilemap.AUTO);
+		tiles.loadMap(tileData, "assets/images/tiles.png", tileWidth, tileHeight, FlxTilemap.AUTO);
 		add(tiles);
+	}
+
+	function createPot(col:Int, row:Int)
+	{
+		var pot = new Pot();
+		pot.x = col * tileWidth;
+		pot.y = row * tileHeight;
+		pots.push(pot);
+		add(pot);
+	}
+
+	function createLight(col:Int, row:Int)
+	{
+		var light = new Light();
+		light.x = col * tileWidth;
+		light.y = row * tileHeight;
+		lights.push(light);
+		add(light);
 	}
 
 	override public function destroy():Void
