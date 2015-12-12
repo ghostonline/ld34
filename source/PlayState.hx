@@ -35,7 +35,7 @@ class PlayState extends FlxState
 		doors = new FlxTypedGroup<Door>();
 		for (def in level.doors)
 		{
-			var door = new Door();
+			var door = new Door(def.dir);
 			level.placeAt(def.pos, door);
 			doors.add(door);
 		}

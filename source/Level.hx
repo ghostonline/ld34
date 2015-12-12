@@ -17,6 +17,7 @@ class Level extends FlxTypedGroup<FlxObject>
 	static inline var ID_SUN = 4;
 	static inline var ID_SWITCH = 5;
 	static inline var ID_DOOR_UP = 6;
+	static inline var ID_DOOR_LEFT = 7;
 
 	var tiles:FlxTilemap;
 	public var tileWidth(default, null):Int;
@@ -57,7 +58,9 @@ class Level extends FlxTypedGroup<FlxObject>
 					case ID_SWITCH:
 						switch_ = { col:col, row:row };
 					case ID_DOOR_UP:
-						doors.push( { pos:{ col:col, row:row }, dir:Door.OpenDirection.Up } );
+						doors.push( { pos: { col:col, row:row }, dir:Door.OpenDirection.Up } );
+					case ID_DOOR_LEFT:
+						doors.push( { pos: { col:col, row:row }, dir:Door.OpenDirection.Left } );
 					default:
 						replaced = tileId;
 				}
