@@ -35,6 +35,12 @@ class PlayState extends FlxState
 
 	override public function update():Void
 	{
+		var dX = 0;
+		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A) { --dX; }
+		if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D) { ++dX; }
+		player.setDirectionX(dX);
+		player.setJump(FlxG.keys.pressed.SPACE || FlxG.keys.pressed.UP || FlxG.keys.pressed.W);
+
 		super.update();
 		FlxG.collide(player, level);
 	}
