@@ -1,4 +1,5 @@
 package;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 
 class Light extends FlxSprite
@@ -10,6 +11,7 @@ class Light extends FlxSprite
 		loadGraphic("assets/images/sun.png");
 		centerOrigin();
 		angularVelocity = 30;
+		allowCollisions = FlxObject.NONE;
 	}
 
 }
