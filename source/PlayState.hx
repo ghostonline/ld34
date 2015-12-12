@@ -19,20 +19,21 @@ class PlayState extends FlxState
 		super.create();
 		FlxG.mouse.visible = false;
 		level = new Level("test");
-		add(level);
 
 		pot = new Pot();
 		level.placeAt(level.pot, pot);
-		add(pot);
-		add(pot.plant);
 
 		light = new Light();
 		level.placeAt(level.light, light);
-		add(light);
 
 		player = new Player();
 		level.placeAt(level.start, player);
+
+		add(light);
+		add(pot);
+		add(pot.plant);
 		add(player);
+		add(level);
 	}
 
 	override public function destroy():Void
