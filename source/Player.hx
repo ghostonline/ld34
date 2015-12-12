@@ -14,6 +14,8 @@ class Player extends FlxSprite
 		maxVelocity.y = 300;
 		drag.x = 1280;
 		acceleration.y = maxVelocity.y;
+		width = 12;
+		offset.x = 2;
 	}
 
 	public function setDirectionX(dir:Int)
@@ -27,7 +29,9 @@ class Player extends FlxSprite
 	{
 		if (jumping && isTouching(FlxObject.FLOOR))
 		{
-			velocity.y = -maxVelocity.y / 2;
+			var potCarry = -150;
+			var normal = -175;
+			velocity.y = normal;
 		}
 	}
 }
