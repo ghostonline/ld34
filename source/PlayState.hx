@@ -24,6 +24,7 @@ class PlayState extends FlxState
 		pot = new Pot();
 		level.placeAt(level.pot, pot);
 		add(pot);
+		add(pot.plant);
 
 		light = new Light();
 		level.placeAt(level.light, light);
@@ -50,6 +51,11 @@ class PlayState extends FlxState
 		player.setDirectionX(dX);
 		player.setJump(FlxG.keys.pressed.UP || FlxG.keys.pressed.W);
 		player.setAction(FlxG.keys.pressed.SPACE || FlxG.keys.pressed.E);
+
+		if (light.isShiningOnPot(pot))
+		{
+			pot.addGrowthTick();
+		}
 
 		super.update();
 		player.resetCollidingPot();

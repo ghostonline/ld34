@@ -3,12 +3,16 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
 import flixel.FlxObject;
+import flixel.group.FlxSpriteGroup;
 
 class Pot extends FlxSprite
 {
+	static inline var FULL_GROW_TIME = 120;
 
+	public var plant(default, null):FlxSprite;
 	public var pickedUp(get, set):Bool;
 	var _pickedUp:Bool;
+	var growTicks:Int;
 
 	function get_pickedUp() { return _pickedUp; }
 	function set_pickedUp(val:Bool)
@@ -31,6 +35,10 @@ class Pot extends FlxSprite
 		loadGraphic("assets/images/pot.png");
 		pickedUp = false;
 		setNormalPhysics();
+		plant = new FlxSprite();
+		plant.loadGraphic("assets/images/plant.png", false, 16);
+		growTicks = -1;
+		addGrowthTick();
 	}
 
 	function setPickedUpPhysics()
@@ -66,5 +74,38 @@ class Pot extends FlxSprite
 
 		allowCollisions = FlxObject.ANY;
 		FlxG.collide(obj, this);
+	}
+
+	function updatePlant()
+	{
+		plant.x = x;
+		plant.y = y - plant.height;
+	}
+
+	public function addGrowthTick()
+	{
+		if (growTicks == FULL_GROW_TIME) { return; }
+		++growTicks;
+
+		if (growTicks == FULL_GROW_TIME)
+		{
+			plant.region.startX = 16;
+		}
+
+		var oldSize = plant.region.tileHeight;
+		var newSize = Math.floor(growTicks / FULL_GROW_TIME * 32);
+		if (oldSize != newSize)
+		{
+			plant.visible = newSize > 0;
+			plant.region.tileHeight = newSize;
+			plant.updateFrameData();
+			plant.updateHitbox();
+		}
+	}
+
+	override public function update():Void
+	{
+		super.update();
+		updatePlant();
 	}
 }
