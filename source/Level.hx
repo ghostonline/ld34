@@ -8,12 +8,15 @@ import flixel.FlxObject;
 import flixel.util.FlxPoint;
 
 typedef TilePos = { col:Int, row:Int };
+typedef DoorDef = { pos:TilePos, dir:Door.OpenDirection };
 
 class Level extends FlxTypedGroup<FlxObject>
 {
 	static inline var ID_PLAYER = 2;
 	static inline var ID_POT = 3;
 	static inline var ID_SUN = 4;
+	static inline var ID_SWITCH = 5;
+	static inline var ID_DOOR_UP = 6;
 
 	var tiles:FlxTilemap;
 	public var tileWidth(default, null):Int;
@@ -22,6 +25,8 @@ class Level extends FlxTypedGroup<FlxObject>
 	public var start(default, null):TilePos;
 	public var pot(default, null):TilePos;
 	public var light(default, null):TilePos;
+	public var doors(default, null):Array<DoorDef>;
+	public var switch_(default, null):TilePos;
 
 	public function new(name:String)
 	{
@@ -30,6 +35,8 @@ class Level extends FlxTypedGroup<FlxObject>
 		var data = new TiledMap('assets/data/$name.tmx');
 		tileWidth = data.tileWidth;
 		tileHeight = data.tileHeight;
+
+		doors = new Array<Level.DoorDef>();
 
 		var tileData = data.layers[0].tileArray.copy();
 		var idx = 0;
@@ -47,6 +54,10 @@ class Level extends FlxTypedGroup<FlxObject>
 						pot = { col:col, row:row };
 					case ID_SUN:
 						light = { col:col, row:row };
+					case ID_SWITCH:
+						switch_ = { col:col, row:row };
+					case ID_DOOR_UP:
+						doors.push( { pos:{ col:col, row:row }, dir:Door.OpenDirection.Up } );
 					default:
 						replaced = tileId;
 				}

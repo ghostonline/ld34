@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -13,6 +14,8 @@ class PlayState extends FlxState
 	var player:Player;
 	var pot:Pot;
 	var light:Light;
+	var doors:FlxTypedGroup<Door>;
+	var switches:FlxTypedGroup<Switch>;
 	var levelCompleteText:FlxText;
 	var nextLevelButton:FlxButton;
 	var resetButton:FlxButton;
@@ -28,6 +31,24 @@ class PlayState extends FlxState
 
 		light = new Light();
 		level.placeAt(level.light, light);
+
+		doors = new FlxTypedGroup<Door>();
+		for (def in level.doors)
+		{
+			var door = new Door();
+			level.placeAt(def.pos, door);
+			doors.add(door);
+		}
+
+		switches = new FlxTypedGroup<Switch>();
+		var switch_ = new Switch();
+		level.placeAt(level.switch_, switch_);
+		switch_.y += level.tileHeight - switch_.height;
+		for (door in doors)
+		{
+			switch_.connectDoor(door);
+		}
+		switches.add(switch_);
 
 		player = new Player();
 		level.placeAt(level.start, player);
@@ -45,9 +66,11 @@ class PlayState extends FlxState
 
 		add(light);
 		add(pot);
+		add(switches);
 		add(player);
 		add(pot.plant);
 		add(level);
+		add(doors);
 		add(levelCompleteText);
 		add(nextLevelButton);
 		add(resetButton);
@@ -77,14 +100,25 @@ class PlayState extends FlxState
 		super.update();
 		player.resetCollidingPot();
 		pot.playerCollide(player);
+		pot.levelCollide(doors);
 		pot.levelCollide(level);
 		FlxG.collide(player, level);
+
+		switches.callAll("prime");
+		FlxG.overlap(player, switches, triggerSwitch);
+		switches.callAll("checkTrigger");
+		FlxG.collide(player, doors);
 
 		if (pot.isGrown)
 		{
 			levelCompleteText.visible = true;
 			nextLevelButton.visible = true;
 		}
+	}
+
+	function triggerSwitch(player:Player, switch_:Switch)
+	{
+		switch_.trigger();
 	}
 
 	function nextLevel()
