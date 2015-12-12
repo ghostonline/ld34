@@ -7,6 +7,8 @@ import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
 
+typedef TilePos = { col:Int, row:Int };
+
 class Level extends FlxTypedGroup<FlxObject>
 {
 	static inline var ID_PLAYER = 2;
@@ -14,12 +16,12 @@ class Level extends FlxTypedGroup<FlxObject>
 	static inline var ID_SUN = 4;
 
 	var tiles:FlxTilemap;
-	var tileWidth:Int;
-	var tileHeight:Int;
+	public var tileWidth(default, null):Int;
+	public var tileHeight(default, null):Int;
 
-	public var start(default, null):FlxPoint;
-	var pots:FlxTypedGroup<Pot>;
-	var lights:Array<Light>;
+	public var start(default, null):TilePos;
+	public var pot(default, null):TilePos;
+	public var light(default, null):TilePos;
 
 	public function new(name:String)
 	{
@@ -28,10 +30,6 @@ class Level extends FlxTypedGroup<FlxObject>
 		var data = new TiledMap('assets/data/$name.tmx');
 		tileWidth = data.tileWidth;
 		tileHeight = data.tileHeight;
-
-		start = new FlxPoint();
-		pots = new FlxTypedGroup<Pot>();
-		lights = new Array<Light>();
 
 		var tileData = data.layers[0].tileArray.copy();
 		var idx = 0;
@@ -44,12 +42,11 @@ class Level extends FlxTypedGroup<FlxObject>
 				switch(tileId)
 				{
 					case ID_PLAYER:
-						start.x = col * tileWidth;
-						start.y = row * tileHeight;
+						start = { col:col, row:row };
 					case ID_POT:
-						createPot(col, row);
+						pot = { col:col, row:row };
 					case ID_SUN:
-						createLight(col, row);
+						light = { col:col, row:row };
 					default:
 						replaced = tileId;
 				}
@@ -65,28 +62,10 @@ class Level extends FlxTypedGroup<FlxObject>
 		add(tiles);
 	}
 
-	function createPot(col:Int, row:Int)
+	public function placeAt(pos:TilePos, obj:FlxObject)
 	{
-		var pot = new Pot();
-		pot.x = col * tileWidth;
-		pot.y = row * tileHeight;
-		pots.add(pot);
-		add(pot);
-	}
-
-	function createLight(col:Int, row:Int)
-	{
-		var light = new Light();
-		light.x = col * tileWidth;
-		light.y = row * tileHeight;
-		lights.push(light);
-		add(light);
-	}
-
-	override public function update():Void
-	{
-		super.update();
-		FlxG.collide(tiles, pots);
+		obj.x = pos.col * tileWidth;
+		obj.y = pos.row * tileHeight;
 	}
 
 	override public function destroy():Void

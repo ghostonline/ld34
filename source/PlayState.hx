@@ -11,6 +11,8 @@ class PlayState extends FlxState
 {
 	var level:Level;
 	var player:Player;
+	var pot:Pot;
+	var light:Light;
 
 	override public function create():Void
 	{
@@ -19,9 +21,16 @@ class PlayState extends FlxState
 		level = new Level("test");
 		add(level);
 
+		pot = new Pot();
+		level.placeAt(level.pot, pot);
+		add(pot);
+
+		light = new Light();
+		level.placeAt(level.light, light);
+		add(light);
+
 		player = new Player();
-		player.x = level.start.x;
-		player.y = level.start.y;
+		level.placeAt(level.start, player);
 		add(player);
 	}
 
@@ -42,6 +51,8 @@ class PlayState extends FlxState
 		player.setJump(FlxG.keys.pressed.SPACE || FlxG.keys.pressed.UP || FlxG.keys.pressed.W);
 
 		super.update();
+		pot.platformCollide(player);
+		pot.levelCollide(level);
 		FlxG.collide(player, level);
 	}
 }
