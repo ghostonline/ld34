@@ -8,6 +8,8 @@ class Pot extends FlxSprite
 	{
 		super();
 		loadGraphic("assets/images/pot.png");
+		maxVelocity.y = 200;
+		acceleration.y = maxVelocity.y;
 	}
 
 }

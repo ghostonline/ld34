@@ -1,6 +1,7 @@
 package;
 
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.FlxG;
 import flixel.group.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
@@ -16,7 +17,7 @@ class Level extends FlxTypedGroup<FlxObject>
 	var tileWidth:Int;
 	var tileHeight:Int;
 
-	var pots:Array<Pot>;
+	var pots:FlxTypedGroup<Pot>;
 	var lights:Array<Light>;
 
 	public function new(name:String)
@@ -27,7 +28,7 @@ class Level extends FlxTypedGroup<FlxObject>
 		tileWidth = data.tileWidth;
 		tileHeight = data.tileHeight;
 
-		pots = new Array<Pot>();
+		pots = new FlxTypedGroup<Pot>();
 		lights = new Array<Light>();
 
 		var tileData = data.layers[0].tileArray.copy();
@@ -65,7 +66,7 @@ class Level extends FlxTypedGroup<FlxObject>
 		var pot = new Pot();
 		pot.x = col * tileWidth;
 		pot.y = row * tileHeight;
-		pots.push(pot);
+		pots.add(pot);
 		add(pot);
 	}
 
@@ -76,6 +77,12 @@ class Level extends FlxTypedGroup<FlxObject>
 		light.y = row * tileHeight;
 		lights.push(light);
 		add(light);
+	}
+
+	override public function update():Void
+	{
+		super.update();
+		FlxG.collide(tiles, pots);
 	}
 
 	override public function destroy():Void
