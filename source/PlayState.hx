@@ -48,10 +48,12 @@ class PlayState extends FlxState
 		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A) { --dX; }
 		if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D) { ++dX; }
 		player.setDirectionX(dX);
-		player.setJump(FlxG.keys.pressed.SPACE || FlxG.keys.pressed.UP || FlxG.keys.pressed.W);
+		player.setJump(FlxG.keys.pressed.UP || FlxG.keys.pressed.W);
+		player.setAction(FlxG.keys.pressed.SPACE || FlxG.keys.pressed.E);
 
 		super.update();
-		pot.platformCollide(player);
+		player.resetCollidingPot();
+		pot.playerCollide(player);
 		pot.levelCollide(level);
 		FlxG.collide(player, level);
 	}
