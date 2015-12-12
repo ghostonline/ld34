@@ -20,7 +20,8 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		level = new Level("test");
+		var levelName = Reg.levels[Reg.level];
+		level = new Level(levelName);
 
 		pot = new Pot();
 		level.placeAt(level.pot, pot);
@@ -88,7 +89,8 @@ class PlayState extends FlxState
 
 	function nextLevel()
 	{
-		trace("BANG!");
+		Reg.level = Math.round(Math.min(Reg.level + 1, Reg.levels.length - 1));
+		FlxG.switchState(new PlayState());
 	}
 
 	function resetLevel()
