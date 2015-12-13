@@ -15,8 +15,8 @@ class Reg
 	 */
 	public static var levels:Array<String> =
 	[
-		//"test",
-		"test2",
+		"test",
+		"throw",
 	];
 	/**
 	 * Generic level variable that can be used for cross-state stuff.
