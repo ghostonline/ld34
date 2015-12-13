@@ -19,6 +19,7 @@ class Reg
 		"test",
 #end
 		"tutorial_1",
+		"tutorial_2",
 		"throw",
 	];
 	/**
