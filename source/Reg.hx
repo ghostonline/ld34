@@ -21,6 +21,7 @@ class Reg
 		"tutorial_1",
 		"tutorial_2",
 		"tutorial_3",
+		"tight",
 		"throw",
 	];
 	/**
