@@ -31,6 +31,8 @@ class PlayState extends FlxState
 
 		light = new Light();
 		level.placeAt(level.light, light);
+		light.x += level.tileWidth / 2;
+		light.y += level.tileHeight / 2;
 
 		doors = new FlxTypedGroup<Door>();
 		for (def in level.doors)
