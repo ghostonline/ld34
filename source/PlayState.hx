@@ -58,11 +58,19 @@ class PlayState extends FlxState
 		player = new Player();
 		level.placeAt(level.start, player);
 
-		levelCompleteText = new FlxText(0, 0, FlxG.width, "Level complete!", 24);
+		var victoryText = "Level complete!";
+		var continueText = "Next";
+		if (Reg.isLastLevel)
+		{
+			victoryText = "Game complete!";
+			continueText = "Main menu";
+		}
+
+		levelCompleteText = new FlxText(0, 0, FlxG.width, victoryText, 24);
 		levelCompleteText.alignment = "center";
 		levelCompleteText.visible = false;
 
-		nextLevelButton = new FlxButton(FlxG.width - 100, levelCompleteText.height + 10, "Next", nextLevel);
+		nextLevelButton = new FlxButton(FlxG.width - 100, levelCompleteText.height + 10, continueText, nextLevel);
 		nextLevelButton.visible = false;
 
 		resetButton = new FlxButton(0, 0, "Reset", resetLevel);
@@ -128,8 +136,15 @@ class PlayState extends FlxState
 
 	function nextLevel()
 	{
-		Reg.level = Math.round(Math.min(Reg.level + 1, Reg.levels.length - 1));
-		FlxG.switchState(new PlayState());
+		if (Reg.isLastLevel)
+		{
+			FlxG.switchState(new MenuState());
+		}
+		else
+		{
+			++Reg.level;
+			FlxG.switchState(new PlayState());
+		}
 	}
 
 	function resetLevel()

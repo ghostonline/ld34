@@ -17,18 +17,23 @@ class Reg
 	[
 #if debug
 		"test",
-#end
+#else
 		"tutorial_1",
 		"tutorial_2",
 		"tutorial_3",
 		"tight",
 		"throw",
+#end
 	];
 	/**
 	 * Generic level variable that can be used for cross-state stuff.
 	 * Example usage: Storing the current level number.
 	 */
 	public static var level:Int = 0;
+
+	public static var isLastLevel(get, null):Bool;
+	static function get_isLastLevel() { return level == levels.length - 1; }
+
 	/**
 	 * Generic scores Array that can be used for cross-state stuff.
 	 * Example usage: Storing the scores for level.
