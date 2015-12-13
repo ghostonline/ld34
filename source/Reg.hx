@@ -15,7 +15,10 @@ class Reg
 	 */
 	public static var levels:Array<String> =
 	[
+#if debug
 		"test",
+#end
+		"tutorial_1",
 		"throw",
 	];
 	/**
