@@ -41,14 +41,17 @@ class PlayState extends FlxState
 		}
 
 		switches = new FlxTypedGroup<Switch>();
-		var switch_ = new Switch();
-		level.placeAt(level.switch_, switch_);
-		switch_.y += level.tileHeight - switch_.height;
-		for (door in doors)
+		for (def in level.switches)
 		{
-			switch_.connectDoor(door);
+			var switch_ = new Switch();
+			level.placeAt(def, switch_);
+			switch_.y += level.tileHeight - switch_.height;
+			for (door in doors)
+			{
+				switch_.connectDoor(door);
+			}
+			switches.add(switch_);
 		}
-		switches.add(switch_);
 
 		player = new Player();
 		level.placeAt(level.start, player);

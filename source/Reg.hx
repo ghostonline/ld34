@@ -15,7 +15,7 @@ class Reg
 	 */
 	public static var levels:Array<String> =
 	[
-		"test",
+		//"test",
 		"test2",
 	];
 	/**

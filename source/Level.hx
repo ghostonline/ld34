@@ -27,7 +27,7 @@ class Level extends FlxTypedGroup<FlxObject>
 	public var pot(default, null):TilePos;
 	public var light(default, null):TilePos;
 	public var doors(default, null):Array<DoorDef>;
-	public var switch_(default, null):TilePos;
+	public var switches(default, null):Array<TilePos>;
 
 	public function new(name:String)
 	{
@@ -38,6 +38,7 @@ class Level extends FlxTypedGroup<FlxObject>
 		tileHeight = data.tileHeight;
 
 		doors = new Array<Level.DoorDef>();
+		switches = new Array<TilePos>();
 
 		var tileData = data.layers[0].tileArray.copy();
 		var idx = 0;
@@ -56,7 +57,7 @@ class Level extends FlxTypedGroup<FlxObject>
 					case ID_SUN:
 						light = { col:col, row:row };
 					case ID_SWITCH:
-						switch_ = { col:col, row:row };
+						switches.push({ col:col, row:row });
 					case ID_DOOR_UP:
 						doors.push( { pos: { col:col, row:row }, dir:Door.OpenDirection.Up } );
 					case ID_DOOR_LEFT:
