@@ -19,7 +19,9 @@ class Light extends FlxSpriteGroup
 		sun.loadGraphic("assets/images/sun.png");
 		sun.x = sun.width / -2;
 		sun.y = sun.height / -2;
+#if !flash
 		sun.angularVelocity = 30;
+#end
 		sun.allowCollisions = FlxObject.NONE;
 		add(sun);
 
